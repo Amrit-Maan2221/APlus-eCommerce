@@ -24,6 +24,12 @@ app.get("/api/test", (req, res) => {
     console.log("This is a test that our express is working fine");
 });
 
+app.use(express.static(path.join(__dirname, "/client/build")));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '/client/build', 'index.html'));
+});
+
 
 
 app.listen(process.env.PORT || 5000, () => {
