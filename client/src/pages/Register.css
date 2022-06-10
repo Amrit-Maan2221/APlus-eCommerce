@@ -1,63 +1,67 @@
-.login_container {
+.register_container {
 	width: 100vw;
 	height: 100vh;
 	background: linear-gradient(
 			rgba(255, 255, 255, 0.5),
 			rgba(255, 255, 255, 0.5)
 		),
-		url("../Images/loginBackground.jpeg") center;
+		url("../Images/registerBackground.jpeg") center;
 	background-size: cover;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 }
 
-.login_wrapper {
-	width: 25%;
+.register_fail {
+	color: red;
+}
+
+.register_wrapper {
+	width: 40%;
 	padding: 20px;
 	background-color: white;
 }
 
-.login_fail {
-	color: red;
-}
-
-.login_title {
+.register_title {
 	font-size: 24px;
 	font-weight: 300;
 }
 
-.login_form {
+.register_form {
 	display: flex;
-	flex-direction: column;
+	flex-wrap: wrap;
 }
 
-.login_input {
+.register_input {
 	flex: 1;
 	min-width: 40%;
-	margin: 10px 0;
+	margin: 20px 10px 0px 0px;
 	padding: 10px;
 }
 
-.login_button {
+.register_agreement {
+	font-size: 12px;
+	margin: 20px 0px;
+}
+
+.register_button {
 	width: 40%;
 	border: none;
 	padding: 15px 20px;
 	background-color: teal;
 	color: white;
 	cursor: pointer;
-	margin-bottom: 10px;
 }
 
-.login_link {
-	margin: 5px 0px;
+.register_link {
+	margin: 12px 0px;
 	font-size: 12px;
 	text-decoration: underline;
 	cursor: pointer;
 }
 
 @media screen and (max-width: 380px) {
-	.login_wrapper {
+	.register_wrapper {
 		width: 75%;
 	}
 }
