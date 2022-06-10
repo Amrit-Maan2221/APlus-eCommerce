@@ -2,9 +2,12 @@
 node_modules/
 /frontend/.pnp
 /frontend/.pnp.js
+/server/.env
 
 # testing
 /frontend/coverage
+
+
 
 # production
 /frontend/build
