@@ -7,6 +7,8 @@ import {
 } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Home from "./pages/Home";
+import Cart from "./pages/cart";
 
 function App() {
 	const user = null;
@@ -14,11 +16,7 @@ function App() {
 		<>
 			<Router>
 				<Routes>
-					<Route
-						exact
-						path="/"
-						element={<div>Welcome to APlus</div>}
-					/>
+					<Route exact path="/" element={<Home />} />
 					<Route
 						path="/test"
 						element={
@@ -31,6 +29,7 @@ function App() {
 					/>
 					<Route exact path="/login" element={<Login />} />
 					<Route exact path="/register" element={<Register />} />
+					<Route exact path="/cart" element={<Cart />} />
 				</Routes>
 			</Router>
 		</>
