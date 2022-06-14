@@ -4,9 +4,16 @@ import { Search, ShoppingCartOutlined, Person } from "@material-ui/icons";
 import { Badge } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { signout } from "../Redux/userRedux";
 
 function Navbar() {
 	const user = useSelector((state) => state.user.currentUser);
+	const dispatch = useDispatch();
+	const handleSignOut = (e) => {
+		e.preventDefault();
+		dispatch(signout());
+	};
 	return (
 		<div className="navbar_container">
 			<div className="navbar_left">
@@ -48,13 +55,14 @@ function Navbar() {
 				{user && (
 					<>
 						<Link
+							onClick={handleSignOut}
 							to={`/signout`}
 							style={{ textDecoration: "none", color: "black" }}
 						>
 							<div className="navbar_menuItems">SIGN OUT</div>
 						</Link>
 						<Link
-							to={`/login`}
+							to={`/profile`}
 							style={{ textDecoration: "none", color: "black" }}
 						>
 							<div className="navbar_menuItems">
@@ -64,13 +72,18 @@ function Navbar() {
 					</>
 				)}
 				<div className="navbar_menuItems">
-					<Badge
-						badgeContent={4}
-						color="primary"
-						overlap="rectangular"
+					<Link
+						to="cart"
+						style={{ textDecoration: "none", color: "black" }}
 					>
-						<ShoppingCartOutlined />
-					</Badge>
+						<Badge
+							badgeContent={4}
+							color="primary"
+							overlap="rectangular"
+						>
+							<ShoppingCartOutlined />
+						</Badge>
+					</Link>
 				</div>
 			</div>
 		</div>

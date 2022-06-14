@@ -31,9 +31,6 @@ router.post("/register", async (req, res) => {
 //LOGIN
 router.post("/login", async (req, res) => {
 	try {
-		console.log("Is login request coming");
-		console.log(`Email is ${req.body.email}`);
-
 		const user = await User.findOne({ email: req.body.email });
 		if (!user) {
 			res.status(401).json("Log In Failed");

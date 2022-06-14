@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Register.css";
+import { useDispatch, useSelector } from "react-redux";
+import { loginFailure, loginStart, loginSuccess } from "../Redux/userRedux";
+import axios from "axios";
 
 function Register() {
 	const [errorMessage, setErrorMessage] = useState("");
@@ -13,9 +16,39 @@ function Register() {
 	const [usernameValue, setUsernameValue] = useState("");
 
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 
-	const onSignUpClicked = async () => {
-		alert("Sign up not implemented yet");
+	const onSignUpClicked = async (e) => {
+		e.preventDefault();
+		setErrorMessage("");
+
+		//Register here
+		try {
+			const res = await axios.post(
+				"http://localhost:4000/api/auth/register",
+				{
+					firstname: firstNameValue,
+					lastname: lastNameValue,
+					username: usernameValue,
+					email: emailValue,
+					password: passwordValue,
+				}
+			);
+		} catch (err) {
+			setErrorMessage("Sign Up Failed");
+		}
+
+		dispatch(loginStart());
+		try {
+			const res = await axios.post(
+				"http://localhost:4000/api/auth/login",
+				{ email: emailValue, password: passwordValue }
+			);
+			dispatch(loginSuccess(res.data));
+			navigate("/");
+		} catch (err) {
+			dispatch(loginFailure());
+		}
 	};
 	return (
 		<div className="register_container">
@@ -58,6 +91,7 @@ function Register() {
 					/>
 					<input
 						class="register_input"
+						type="password"
 						placeholder="confirm password"
 						value={confirmPasswordValue}
 						onChange={(e) =>
