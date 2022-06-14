@@ -31,9 +31,14 @@ router.post("/register", async (req, res) => {
 //LOGIN
 router.post("/login", async (req, res) => {
 	try {
-		const user = await User.findOne({ username: req.body.username });
-		!user && res.status(401).json("Wrong User Name");
-		console.log(user);
+		console.log("Is login request coming");
+		console.log(`Email is ${req.body.email}`);
+
+		const user = await User.findOne({ email: req.body.email });
+		if (!user) {
+			res.status(401).json("Log In Failed");
+			return;
+		}
 
 		const hashedPassword = CryptoJS.AES.decrypt(
 			user.password,
@@ -43,28 +48,31 @@ router.post("/login", async (req, res) => {
 		const originalPassword = hashedPassword.toString(CryptoJS.enc.Utf8);
 
 		const inputPassword = req.body.password;
+		console.log(`Password is ${req.body.password}`);
 
-		originalPassword !== inputPassword &&
+		if (originalPassword !== inputPassword) {
 			res.status(401).json("Wrong Password");
+			return;
+		}
 
 		const accessToken = jwt.sign(
 			{
 				id: user._id,
 				isAdmin: user.isAdmin,
 			},
-			"process.env.JWT_SEC",
+			process.env.JWT_SEC,
 			{ expiresIn: "3d" }
 		);
 
 		const { password, ...others } = user._doc;
 		res.status(200).json({ ...others, accessToken });
-		res.status(200).json(user);
+		return;
 	} catch (err) {
 		res.status(500).json(err);
 	}
 });
 
-/**git
+/**
  * Export the router
  * Part 3 OF USING EXPRESS ROUTER
  */

@@ -1,10 +1,12 @@
 import React from "react";
 import "./Navbar.css";
-import { Search, ShoppingCartOutlined } from "@material-ui/icons";
+import { Search, ShoppingCartOutlined, Person } from "@material-ui/icons";
 import { Badge } from "@material-ui/core";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function Navbar() {
+	const user = useSelector((state) => state.user.currentUser);
 	return (
 		<div className="navbar_container">
 			<div className="navbar_left">
@@ -27,20 +29,46 @@ function Navbar() {
 				</Link>
 			</div>
 			<div className="navbar_right">
-				<Link
-					to={`/register`}
-					style={{ textDecoration: "none", color: "black" }}
-				>
-					<div className="navbar_menuItems">REGISTER</div>
-				</Link>
-				<Link
-					to={`/login`}
-					style={{ textDecoration: "none", color: "black" }}
-				>
-					<div className="navbar_menuItems">SIGN IN</div>
-				</Link>
+				{!user && (
+					<>
+						<Link
+							to={`/register`}
+							style={{ textDecoration: "none", color: "black" }}
+						>
+							<div className="navbar_menuItems">REGISTER</div>
+						</Link>
+						<Link
+							to={`/login`}
+							style={{ textDecoration: "none", color: "black" }}
+						>
+							<div className="navbar_menuItems">SIGN IN</div>
+						</Link>
+					</>
+				)}
+				{user && (
+					<>
+						<Link
+							to={`/signout`}
+							style={{ textDecoration: "none", color: "black" }}
+						>
+							<div className="navbar_menuItems">SIGN OUT</div>
+						</Link>
+						<Link
+							to={`/login`}
+							style={{ textDecoration: "none", color: "black" }}
+						>
+							<div className="navbar_menuItems">
+								<Person />
+							</div>
+						</Link>
+					</>
+				)}
 				<div className="navbar_menuItems">
-					<Badge badgeContent={4} color="primary">
+					<Badge
+						badgeContent={4}
+						color="primary"
+						overlap="rectangular"
+					>
 						<ShoppingCartOutlined />
 					</Badge>
 				</div>

@@ -1,35 +1,47 @@
 import React, { useState } from "react";
 import "./Login.css";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { loginFailure, loginStart, loginSuccess } from "../Redux/userRedux";
+import axios from "axios";
 
 function Login() {
-	const [errorMessage, setErrorMessage] = useState("");
 	const [emailValue, setEmailValue] = useState("");
 	const [passwordValue, setPasswordValue] = useState("");
+	const { isFetching, error } = useSelector((state) => state.user);
 
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 
 	const onLogInClicked = async (e) => {
 		e.preventDefault();
-		alert("Log in not implemented yet");
+		dispatch(loginStart());
+		try {
+			const res = await axios.post(
+				"http://localhost:4000/api/auth/login",
+				{ email: emailValue, password: passwordValue }
+			);
+			dispatch(loginSuccess(res.data));
+			navigate("/");
+		} catch (err) {
+			dispatch(loginFailure());
+		}
 	};
 
 	return (
 		<div className="login_container">
 			<div className="login_wrapper">
 				<h1 className="login_title">LOGIN</h1>
-				{errorMessage && (
-					<div className="login_fail">{errorMessage}</div>
-				)}
+				{error && <div className="login_fail">Failed to Login!</div>}
 				<form className="login_form">
 					<input
-						class="login_input"
+						className="login_input"
 						value={emailValue}
 						onChange={(e) => setEmailValue(e.target.value)}
 						placeholder="E-mail"
 					/>
 					<input
-						class="login_input"
+						className="login_input"
 						type="password"
 						value={passwordValue}
 						onChange={(e) => setPasswordValue(e.target.value)}
@@ -37,7 +49,7 @@ function Login() {
 					/>
 					<button
 						className="login_button"
-						disabled={!emailValue || !passwordValue}
+						disabled={!emailValue || !passwordValue || isFetching}
 						onClick={onLogInClicked}
 					>
 						LOGIN

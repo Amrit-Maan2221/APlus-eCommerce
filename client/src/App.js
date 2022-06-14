@@ -9,27 +9,27 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
 import Cart from "./pages/cart";
+import { useSelector } from "react-redux";
 
 function App() {
-	const user = null;
+	const user = useSelector((state) => state.user.currentUser);
 	return (
 		<>
 			<Router>
 				<Routes>
 					<Route exact path="/" element={<Home />} />
 					<Route
-						path="/test"
-						element={
-							user ? (
-								<div>This is a test Route</div>
-							) : (
-								<Navigate to="/login" />
-							)
-						}
+						path="/login"
+						element={!user ? <Login /> : <Navigate to="/" />}
 					/>
-					<Route exact path="/login" element={<Login />} />
-					<Route exact path="/register" element={<Register />} />
-					<Route exact path="/cart" element={<Cart />} />
+					<Route
+						path="/register"
+						element={!user ? <Register /> : <Navigate to="/" />}
+					/>
+					<Route
+						path="/cart"
+						element={user ? <Cart /> : <Navigate to="/login" />}
+					/>
 				</Routes>
 			</Router>
 		</>
